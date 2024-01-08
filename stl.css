@@ -1,14 +1,11 @@
 
 body{
-    /* margin: 0; */
     background-color: rgb(150, 154, 159);
     width: 530px;
     margin: 0 auto;
 }
 canvas{
-    width: 500px;
-    height: 500px;
-    border: 1px;
+   border: 1px;
    background-color: rgb(221, 230, 231); 
 }
 
@@ -29,5 +26,4 @@ border-radius: 20px;
     display: block;
     margin-left: auto;
     margin-right: auto 
-
 }
