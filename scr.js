@@ -6,27 +6,9 @@ let textarea = document.getElementById('tarea');
 
 let canvas = document.getElementById("canvas");
 let point = canvas.getContext("2d");
-// let food = canvas.getContext("2d");
-
-
-// point.fillStyle = "rgb(255,105,180)";
-
-
-
-
 
 const BOARD_SIZE = 5;
-// function generateMatrix(arg) {
-//     let arr = [];
-//     let arrMatrix = [];
-//     for(let j=0; j<arg;j++){ 
-//         arr.push('_')  
-//     }
-//     for(let i=0; i<arg;i++){
-//         arrMatrix.push(arr)
-//     }
-//     return arrMatrix;
-// }
+
 function generateMatrix(arg) {
     let arrMatrix = [];
     for (let i = 0; i < arg; i++) {
@@ -38,7 +20,7 @@ function generateMatrix(arg) {
     }
     return arrMatrix;
 }
-// generateMatrix(BOARD_SIZE);
+
 
 function generateInitialSnakePosition(max) {
     let obX_Y = {};
@@ -59,7 +41,6 @@ function applySnakeToMatrix(matrix, snakePosition) {
     return matrix;
 }
 
-// matrix = applySnakeToMatrix(matrix, snakePosition); // переопределяю переменную на матрицу со змейкой внутри
 let foodPosition = generateFoodPosition(matrix);
 
 
@@ -95,9 +76,6 @@ function applyFoodToMatrix(matrix, foodPosition) {
 applySnakeToMatrix(matrix, snakePosition);
 applyFoodToMatrix(matrix, foodPosition);
 
-// console.log(snakePosition);
-
-
 
 function snakeMoveLeft(snakePosition) {
     snakePosition.x -= 1;
@@ -126,7 +104,6 @@ function snakeMoveUp(snakePosition) {
         snakePosition.y = BOARD_SIZE - 1;
     }
 }
-
 
 document.addEventListener('keydown', event => {
     if (event.key === 'ArrowLeft') {
@@ -193,19 +170,13 @@ console.log(snakePosition);
 
 // Добавляет текст arg в textarea
 function textareaAdd(arg) {
-    // JSON.stringify форматирует массивы не так как нам нужно
-    // (печатает каждый элемент массива на новой строке)
-    // Попробуем обойтись без него.
-    // textarea.textContent += JSON.stringify(arg)+"\n";
     textarea.textContent += arg + "\n";
 }
 
-// Заменяет текст в textarea на текст arg
 function textareaReplace(arg) {
     textarea.textContent = arg;
 }
 
-// Очищает textarea
 function textareaClear() {
     textarea.textContent = '';
 }
@@ -216,7 +187,6 @@ function array2dToString(array2d) {
         resultString += '[';
         row.forEach((cell, x) => {
             resultString += cell;
-
             // Добавляем разделитель (пробел)
             // только между ячейками,
             // не добавляем пробел в конец
@@ -230,10 +200,7 @@ function array2dToString(array2d) {
     return resultString;
 }
 
-// Когда что-то печатаем, будем при каждом вызове printText
-// дополнительно вызывать array2dToString или JSON.stringify
 textareaAdd(array2dToString(matrix));
-
 
 // одновременное рисовании в csnvas 
 function arrayPrintCanvasSnake(matrix2d) {
