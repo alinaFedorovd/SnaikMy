@@ -1,12 +1,6 @@
-let up_btn = document.getElementById('up');
-let left_btn = document.getElementById('left');
-let rit_btn = document.getElementById('rit');
-let down_btn = document.getElementById('down');
 let textarea = document.getElementById('tarea');
-
 let canvas = document.getElementById("canvas");
 let point = canvas.getContext("2d");
-
 const BOARD_SIZE = 5;
 
 function generateMatrix(arg) {
@@ -164,18 +158,13 @@ function fu2() {
     arrayPrintCanvasSnake(matrix);
 }
 
-
-console.log("после");
-console.log(snakePosition);
-
-// Добавляет текст arg в textarea
 function textareaAdd(arg) {
     textarea.textContent += arg + "\n";
 }
-
-function textareaReplace(arg) {
-    textarea.textContent = arg;
-}
+// не уверенна, что это пригодиться в дальнейшем - под вопросом
+// function textareaReplace(arg) {
+//     textarea.textContent = arg;
+// }
 
 function textareaClear() {
     textarea.textContent = '';
@@ -253,8 +242,7 @@ function isEating(snakePosition, foodPosition) {
     } else {
         return false;
     }
-
 }
 
-console.log(isEating(snakePosition, foodPosition));
-isEating(snakePosition, foodPosition);
+// это зачем?
+// isEating(snakePosition, foodPosition);
