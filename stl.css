@@ -6,12 +6,13 @@ body{
     margin: 0 auto;
 }
 canvas{
+    width: 500px;
+    height: 500px;
     border: 1px;
    background-color: rgb(221, 230, 231); 
 }
 
 button{
-    margin: ;
 background-color: rgb(134, 183, 188);
 width: 100px;
 height: 50px;
