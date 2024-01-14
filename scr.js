@@ -11,6 +11,10 @@ applySnakeToMatrix(matrix, snakePosition);
 applyFoodToMatrix(matrix, foodPosition);
 
 document.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+
+    event.stopPropagation();
+
     if (event.key === 'ArrowLeft') {
         matrix[snakePosition.y][snakePosition.x] = "_";
         snakeMoveLeft(snakePosition);
