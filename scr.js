@@ -60,8 +60,7 @@ function fu1() {
     foodPosition = generateFoodPosition(matrix);
     applySnakeToMatrix(matrix, snakePosition)
     applyFoodToMatrix(matrix, foodPosition);
-    arrayPrintCanvasSnake(matrix);
-    applyPrintCanvasFood(matrix);
+    drawMatrixOnCanvas(matrix);
     textareaClear();
     textareaAdd(array2dToString(matrix));
 }
@@ -70,7 +69,7 @@ function fu2() {
     applySnakeToMatrix(matrix, snakePosition);
     textareaClear();
     textareaAdd(array2dToString(matrix));
-    arrayPrintCanvasSnake(matrix);
+    drawMatrixOnCanvas(matrix);
 }
 
 function textareaAdd(arg) {
@@ -107,49 +106,32 @@ function array2dToString(array2d) {
 textareaAdd(array2dToString(matrix));
 
 // одновременное рисовании в csnvas 
-function arrayPrintCanvasSnake(matrix2d) {
+function drawMatrixOnCanvas(matrix2d) {
+    point.clearRect(0, 0, canvas.width, canvas.height);
+
     let y_pr;
     let x_pr;
-    matrix2d.forEach((row, y) => {
 
+    matrix2d.forEach((row, y) => {
         row.forEach((cell, x) => {
             if (cell == "s") {
-                x_pr = x * 100;
-                y_pr = y * 100;
-                applyPrintCanvasFood(matrix);
+            	x_pr = x * 100;
+            	y_pr = y * 100;
+                point.fillStyle = "rgb(46,139,87)";
+                point.fillRect(x_pr, y_pr, 100, 100);
             }
-
-        });
-
-    });
-    point.fillStyle = "rgb(46,139,87)";
-    point.clearRect(0, 0, canvas.width, canvas.height);
-    point.fillRect(x_pr, y_pr, 100, 100);
-    applyPrintCanvasFood(matrix);
-}
-
-function applyPrintCanvasFood(matrix2d) {
-    let y_pr;
-    let x_pr;
-    matrix2d.forEach((row, y) => {
-
-        row.forEach((cell, x) => {
+            
             if (cell == "f") {
-                x_pr = x * 100;
-                y_pr = y * 100;
+            	x_pr = x * 100;
+            	y_pr = y * 100;
+                point.fillStyle = "rgb(255,0,0)";
+                point.fillRect(x_pr, y_pr, 100, 100);
             }
-
         });
-
     });
-    point.fillStyle = "rgb(255,0,0)";
-    point.fillRect(x_pr, y_pr, 100, 100);
-
-
 }
 
-arrayPrintCanvasSnake(matrix);
-applyPrintCanvasFood(matrix);
+drawMatrixOnCanvas(matrix);
 
 function isEating(snakePosition, foodPosition) {
     if (snakePosition.x == foodPosition.x && snakePosition.y == foodPosition.y) {
