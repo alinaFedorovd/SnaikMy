@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="stl.css" rel="stylesheet">
-    <title>Document</title>
+    <link href="styles.css" rel="stylesheet">
+    <title>Snake Game</title>
 </head>
+
 <body>
-    <canvas id="canvas" height="500" width="500"></canvas>
-    <textarea id="tarea"  rows="20" cols="50"></textarea>
+    <!-- Тэг center устарел (deprecated), но это не важно -->
+    <center>
+        <canvas id="canvas" height="500" width="500"></canvas>
+        <br />
+        <textarea id="tarea" rows="30" cols="50"></textarea>
+    </center>
     <script src="constants.js"></script>
     <script src="state.js"></script>
-    <script src="tools.js"></script>
+    <script src="ui.js"></script>
     <script src="index.js"></script>
 </body>
+
 </html>

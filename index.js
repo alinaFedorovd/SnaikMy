@@ -1,44 +1,47 @@
 let textarea = document.getElementById('tarea');
 let canvas = document.getElementById("canvas");
 
-let matrix = generateMatrix(BOARD_SIZE);
-let snakePosition = generateInitialSnakePosition(BOARD_SIZE);
-let foodPosition = generateFoodPosition(matrix);
+let state = generateState(BOARD_SIZE);
 
-applySnakeToMatrix(matrix, snakePosition);
-applyFoodToMatrix(matrix, foodPosition);
+// Если надо, изменить размер канваса в соответствии со значениями констант
+changeCanvasSize(canvas, BOARD_SIZE, CELL_SIZE);
 
-drawMatrixOnCanvas(matrix, canvas);
-drawMatrixInTextarea(matrix, textarea);
+// Отрисовываем змейку графически
+drawStateOnCanvas(state, canvas);
+
+// Печатаем змейку текстом
+drawStateInTextarea(state, textarea);
 
 document.addEventListener('keydown', event => {
+    // Если нажата клавиша не из списка, ничего не делаем
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
 
     // Отменить стандартное поведение (прокрутку страницы клавишами клавиатуры)
     event.preventDefault();
 
-    if (event.key === 'ArrowLeft') {
-        snakeMoveLeft(snakePosition);
-    }
+    // 'arrowНаправление' ==> 'направление'
+    const key = event.key.replace('Arrow', '').toLowerCase();
 
-    if (event.key === 'ArrowRight') {
-        snakeMoveRight(snakePosition);
+    if (canChangeDirection(state, key)) {
+        if (USE_TIMER) {
+            // Если используется таймер, при нажатии на клавиши мы только меняем направление
+            // Двигаться змейка будет только когда срабатывает setInterval
+            сhangeDirection(state, key);
+        } else {
+            // Таймер не используется. При нажатии на клавишу мы должны и поменять направление,
+            // передвинуть змейку и сделать перерисовку
+            сhangeDirection(state, key);
+            snakeMove(state);
+            drawStateInTextarea(state, textarea);
+            drawStateOnCanvas(state, canvas);
+        }
     }
-
-    if (event.key === 'ArrowUp') {
-        snakeMoveUp(snakePosition);
-    }
-
-    if (event.key === 'ArrowDown') {
-        snakeMoveDown(snakePosition);
-    }
-
-    matrix = generateMatrix(BOARD_SIZE);
-    if (isEating(snakePosition, foodPosition)) {
-        foodPosition = generateFoodPosition(matrix);
-    }
-    applyFoodToMatrix(matrix, foodPosition);
-    applySnakeToMatrix(matrix, snakePosition)    
-    drawMatrixInTextarea(matrix, textarea);
-    drawMatrixOnCanvas(matrix, canvas);
 });
+
+if (USE_TIMER) {
+    setInterval(() => {
+        snakeMove(state);
+        drawStateInTextarea(state, textarea);
+        drawStateOnCanvas(state, canvas);
+    }, TIMER_INTERVAL)    
+}
