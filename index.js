@@ -14,6 +14,7 @@ drawMatrixInTextarea(matrix, textarea);
 document.addEventListener('keydown', event => {
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
 
+    // Отменить стандартное поведение (прокрутку страницы клавишами клавиатуры)
     event.preventDefault();
 
     if (event.key === 'ArrowLeft') {
