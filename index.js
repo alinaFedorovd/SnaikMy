@@ -4,7 +4,7 @@ let canvas = document.getElementById("canvas");
 let state = generateState(BOARD_SIZE);
 
 // Изменить размер и стили канваса в соответствии со значениями констант
-changeCanvasProperties(canvas, BOARD_SIZE, CELL_SIZE, COLOR_CELL_BORDER, COLOR_EMPTY_CELL);
+changeCanvasProperties(canvas, BOARD_SIZE, CELL_SIZE, COLOR_CELL_BORDER, COLOR_BACKGROUND);
 
 // Отрисовываем змейку графически
 drawStateOnCanvas(state, canvas);
