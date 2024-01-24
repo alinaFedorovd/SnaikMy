@@ -26,25 +26,36 @@ function drawStateOnCanvas(state, canvas) {
                 const xInPixels = x * CELL_SIZE;
                 const yInPixels = y * CELL_SIZE;
 
+                // Drawing filled rect with border
+                // https://stackoverflow.com/a/38174189
+                context.beginPath();
+
                 if (cell == CELL_SNAKE_HEAD) {
                     context.fillStyle = COLOR_SNAKE_HEAD;
-                    context.fillRect(xInPixels, yInPixels, CELL_SIZE, CELL_SIZE);
+                }
+                else if (cell == CELL_SNAKE_TAIL) {
+                    context.fillStyle = COLOR_SNAKE_TAIL;
+                }
+                else if (cell == CELL_FOOD) {
+                    context.fillStyle = COLOR_FOOD;
+                } else {
+                    context.fillStyle = COLOR_EMPTY_CELL;
                 }
 
-                if (cell == CELL_SNAKE_TAIL) {
-                    context.fillStyle = COLOR_SNAKE_TAIL;
-                    context.fillRect(xInPixels, yInPixels, CELL_SIZE, CELL_SIZE);
-                }
-                
-                if (cell == CELL_FOOD) {
-                    context.fillStyle = COLOR_FOOD;
-                    context.fillRect(xInPixels, yInPixels, CELL_SIZE, CELL_SIZE);
-                }
+                context.strokeStyle = COLOR_CELL_BORDER;
+                context.rect(xInPixels, yInPixels, CELL_SIZE, CELL_SIZE);
+                context.fill();
+                context.lineWidth = 2;
+                context.stroke();
+
+                // "Add ctx.beginPath() before and ctx.closePath() after this code. Otherwise you will see some fun, but probably undesired behaviour."
+                context.closePath();
             });
         });
     } else {
         context.font = "16px serif";
-        context.fillText(GAME_OVER_TEXT, 10, 10);
+        context.fillStyle = COLOR_TEXT;
+        context.fillText(gameOverText(state), 10, 10);
     }
 }
 
@@ -58,10 +69,8 @@ function drawStateInTextarea(state, textarea) {
             resultString += '[';
             row.forEach((cell, x) => {
                 resultString += cell;
-                // Добавляем разделитель (пробел)
-                // только между ячейками,
-                // не добавляем пробел в конец
-                // (после последней ячейки)
+                // Добавляем разделитель (пробел) только между ячейками,
+                // не добавляем пробел после последней ячейки
                 if (x < row.length - 1) {
                     resultString += ' ';
                 }
@@ -95,7 +104,7 @@ function drawStateInTextarea(state, textarea) {
     if (!state.gameOver) {
         text = array2dToString(stateToMatrix(state));
     } else {
-        text = GAME_OVER_TEXT;
+        text = gameOverText(state);
     }
 
     // Отладочный вывод: распечатываем state

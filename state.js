@@ -22,13 +22,14 @@ function generateMatrix(size) {
 function generateState(size) {
     let state = {
     	// Направление по которому будет двигаться змейка
-        direction: 'left',
+        direction: 'right',
         // Закончена ли игра
         gameOver: false,
         // Размер игрового поля
         size: size,
         // Генерируем змейку в рандомном месте
-        snakeSegments: [generateInitialSnakePosition(size)],
+        // snakeSegments: [generateInitialSnakePosition(size)],
+        snakeSegments: [{x:0, y: 0}],
     }
     // Добавляем в state поле foodPosition (еда в рандомном месте)
     setNewFoodPosition(state);    
@@ -45,12 +46,12 @@ const randomNumber = function(max) {
 // Сгенерировать объект с рандомными координатами для змейки
 // @param {number} max - максимальные возможные x/y
 // @returns {object} - объект с координатами ({x: .., y: ..})
-function generateInitialSnakePosition(max) {
-    let obX_Y = {};
-    obX_Y.x = randomNumber(max);
-    obX_Y.y = randomNumber(max);
-    return obX_Y;
-}
+// function generateInitialSnakePosition(max) {
+//     let obX_Y = {};
+//     obX_Y.x = randomNumber(max);
+//     obX_Y.y = randomNumber(max);
+//     return obX_Y;
+// }
 
 // Найти пустые клетки игрового поля
 // @param {object} state - объект с состоянием игры
@@ -96,12 +97,15 @@ function stateToMatrix(state) {
     state.snakeSegments.forEach((segment, i) =>{
         if (i == 0) return; // голову нарисуем потом
 
-        matrix[segment.y][segment.x] = CELL_SNAKE_TAIL;
+        // Отрисовываем сегмент змейки только если он не выходит за пределы игрового поля
+        if (segment.y >= 0 && segment.y < state.size && segment.x >= 0 && segment.x < state.size)
+            matrix[segment.y][segment.x] = CELL_SNAKE_TAIL;
     });
 
-    // Рисуем головной сегмент змейки
+    // Рисуем голову змейки (только если она не выходит за пределы игрового поля)
     const head = state.snakeSegments[0]
-    matrix[head.y][head.x] = CELL_SNAKE_HEAD;
+    if (head.y >= 0 && head.y < state.size && head.x >= 0 && head.x < state.size)
+        matrix[head.y][head.x] = CELL_SNAKE_HEAD;
 
     return matrix;
 }
@@ -125,25 +129,25 @@ function snakeMove(state) {
     switch (state.direction) {
         case 'left':
             newHead.x -= 1;
-            if (newHead.x < 0) {
+            if (newHead.x < 0 && !CHECK_IF_COLLIDED_WITH_WALLS) {
                 newHead.x = BOARD_SIZE - 1;
             }
             break;
         case 'right':
             newHead.x += 1;
-            if (newHead.x > BOARD_SIZE - 1) {
+            if (newHead.x > BOARD_SIZE - 1 && !CHECK_IF_COLLIDED_WITH_WALLS) {
                 newHead.x = 0;
             }
             break;
         case 'up':
             newHead.y -= 1;
-            if (newHead.y < 0) {
+            if (newHead.y < 0 && !CHECK_IF_COLLIDED_WITH_WALLS) {
                 newHead.y = BOARD_SIZE - 1;
             }
             break;
         case 'down':
             newHead.y += 1;
-            if (newHead.y > BOARD_SIZE - 1) {
+            if (newHead.y > BOARD_SIZE - 1 && !CHECK_IF_COLLIDED_WITH_WALLS) {
                 newHead.y = 0;
             }
     }   
@@ -168,6 +172,8 @@ function snakeMove(state) {
         // Змейка не ест еду
         // Удаляем хвост
         state.snakeSegments.pop();
+
+        endGameIfNecessary(state);
     }
 }
 
@@ -219,11 +225,57 @@ function isEating(state) {
     }
 }
 
+// Узнать пересекается ли змейка сама с обой
+// @param {object} state - объект с состоянием игры
+// @returns {boolean} - пересекается ли змейка сама с собой (true/false)
+function isCollidingWithItself(state) {
+    let isColliding = false;
+    state.snakeSegments.forEach((segment, i) => {
+        state.snakeSegments.forEach((segment2, j) => {
+            if (i !== j) {
+                if (segment.x === segment2.x && segment.y === segment2.y) isColliding = true;
+            }
+        });
+    });
+    return isColliding;
+}
+
+// Узнать пересекается ли змейка со стеной (врезалась ли она в стену)
+// @param {object} state - объект с состоянием игры
+// @returns {boolean} - пересекается ли змейка со стеной (true/false)
+function isCollidingWithWalls(state) {
+    let out = false;
+    state.snakeSegments.forEach((segment) => {
+      if (segment.x < 0 || segment.x > state.size - 1 || segment.y < 0 || segment.y > state.size - 1) {
+        out = true;
+      }
+    });
+    return out;
+}
+
 // Если змейка разрослась до размеров игрового поля, закончить игру
 // @param {object} state - объект с состоянием игры (будет мутирован)
-function endGameIfNecessary(state) {
-    // Если змейка разрослась до размеров игрового поля, игра закончена
-    if (findEmptySegments(state).length == 0) {
+function endGameIfNecessary(state) {    
+    if (
+        // Если змейка разрослась до размеров игрового поля, игра закончена
+        (findEmptySegments(state).length == 0) ||
+        // Если змейка пересекла саму себя
+        (CHECK_IF_COLLIDED_WITH_ITSELF && isCollidingWithItself(state)) ||
+        // Если змейка врезалась в стену
+        (CHECK_IF_COLLIDED_WITH_WALLS && isCollidingWithWalls(state))
+    ) {
         state.gameOver = true;
+    }    
+}
+
+// Вернуть текст который будет показываться когда игра закончена
+// @param {object} state - объект с состоянием игры
+function gameOverText(state) {
+    if (state.gameOver) {
+        if (CHECK_IF_COLLIDED_WITH_ITSELF && isCollidingWithItself(state))
+            return COLLIDED_WITH_ITSELF_TEXT;
+        else if (COLLIDED_WITH_WALL_TEXT && isCollidingWithWalls(state))
+            return COLLIDED_WITH_WALL_TEXT;
+        else return GAME_WIN_TEXT;
     }
 }
