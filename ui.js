@@ -44,7 +44,7 @@ function drawStateOnCanvas(state, canvas) {
         });
     } else {
         context.font = "16px serif";
-        context.fillText(GAME_OVER_TEXT, 10, 10);
+        context.fillText(gameOverText(state), 10, 10);
     }
 }
 
@@ -95,7 +95,7 @@ function drawStateInTextarea(state, textarea) {
     if (!state.gameOver) {
         text = array2dToString(stateToMatrix(state));
     } else {
-        text = GAME_OVER_TEXT;
+        text = gameOverText(state);
     }
 
     // Отладочный вывод: распечатываем state

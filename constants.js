@@ -10,6 +10,12 @@ const USE_TIMER = true;
 // Интервал таймера (используется только если USE_TIMER установлено в true)
 const TIMER_INTERVAL = 300;
 
+// Прекращать игру если змейка вышла за пределы игрового поля
+const CHECK_IF_COLLIDED_WITH_WALLS = true;
+
+// Прекращать игру если змейка вышла за пересеклась сама с собой
+const CHECK_IF_COLLIDED_WITH_ITSELF = true;
+
 // Символ обзоначающий пустую клетку в матрице
 const CELL_EMPTY = '_';
 
@@ -31,5 +37,11 @@ const COLOR_SNAKE_TAIL = 'rgb(46,139,87)';
 // Цвет еды (в <canvas>)
 const COLOR_FOOD = 'rgb(255,0,0)';
 
-// Текст который отображается когда игра закончена
-const GAME_OVER_TEXT = "You won.\nRefresh browser page to restart the game.";
+// Текст который отображается когда игра выиграна
+const GAME_WIN_TEXT = "You won.\nRefresh browser page to restart the game.";
+
+// Текст который отображается когда голова змейки наткнулась на стену
+const COLLIDED_WITH_WALL_TEXT = "You lost.\nSnake collided with wall.";
+
+// Текст который отображается змейка пересеклась сама с собой
+const COLLIDED_WITH_ITSELF_TEXT = "You lost.\nSnake collided with itself.";
