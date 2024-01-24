@@ -3,11 +3,6 @@ body {
     /* width: 530px; */
     /* margin: 0 auto; */
 }
-canvas {
-   border: 1px;
-   background-color: SlateGrey; 
-   border: 1px #eee solid;
-}
 
 /* button {
     background-color: rgb(134, 183, 188);

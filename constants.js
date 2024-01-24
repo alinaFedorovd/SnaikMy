@@ -37,8 +37,8 @@ const COLOR_SNAKE_TAIL = 'rgb(46,139,87)';
 // Цвет еды (в <canvas>)
 const COLOR_FOOD = 'rgb(255,0,0)';
 
-// Цвет пустой клетки
-const COLOR_EMPTY_CELL = 'SlateGrey';
+// Цвет фона канваса и пустых клеток
+const COLOR_BACKGROUND = 'SlateGrey';
 
 // Бордер всех клеток
 const COLOR_CELL_BORDER = '#eee'
