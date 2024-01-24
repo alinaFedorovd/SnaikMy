@@ -22,13 +22,14 @@ function generateMatrix(size) {
 function generateState(size) {
     let state = {
     	// Направление по которому будет двигаться змейка
-        direction: 'left',
+        direction: 'right',
         // Закончена ли игра
         gameOver: false,
         // Размер игрового поля
         size: size,
         // Генерируем змейку в рандомном месте
-        snakeSegments: [generateInitialSnakePosition(size)],
+        // snakeSegments: [generateInitialSnakePosition(size)],
+        snakeSegments: [{x:0, y: 0}],
     }
     // Добавляем в state поле foodPosition (еда в рандомном месте)
     setNewFoodPosition(state);    
@@ -45,12 +46,12 @@ const randomNumber = function(max) {
 // Сгенерировать объект с рандомными координатами для змейки
 // @param {number} max - максимальные возможные x/y
 // @returns {object} - объект с координатами ({x: .., y: ..})
-function generateInitialSnakePosition(max) {
-    let obX_Y = {};
-    obX_Y.x = randomNumber(max);
-    obX_Y.y = randomNumber(max);
-    return obX_Y;
-}
+// function generateInitialSnakePosition(max) {
+//     let obX_Y = {};
+//     obX_Y.x = randomNumber(max);
+//     obX_Y.y = randomNumber(max);
+//     return obX_Y;
+// }
 
 // Найти пустые клетки игрового поля
 // @param {object} state - объект с состоянием игры
@@ -224,9 +225,9 @@ function isEating(state) {
     }
 }
 
-// Узнать ест ли голова змейки еду (пересекаеется ли по координатам с едой)
+// Узнать пересекается ли змейка сама с обой
 // @param {object} state - объект с состоянием игры
-// @returns {boolean} - ест ли змейка еду (true/false)
+// @returns {boolean} - пересекается ли змейка сама с собой (true/false)
 function isCollidingWithItself(state) {
     let isColliding = false;
     state.snakeSegments.forEach((segment, i) => {
@@ -239,6 +240,9 @@ function isCollidingWithItself(state) {
     return isColliding;
 }
 
+// Узнать пересекается ли змейка со стеной (врезалась ли она в стену)
+// @param {object} state - объект с состоянием игры
+// @returns {boolean} - пересекается ли змейка со стеной (true/false)
 function isCollidingWithWalls(state) {
     let out = false;
     state.snakeSegments.forEach((segment) => {
@@ -264,11 +268,13 @@ function endGameIfNecessary(state) {
     }    
 }
 
+// Вернуть текст который будет показываться когда игра закончена
+// @param {object} state - объект с состоянием игры
 function gameOverText(state) {
     if (state.gameOver) {
-        if (isCollidingWithItself(state))
+        if (CHECK_IF_COLLIDED_WITH_ITSELF && isCollidingWithItself(state))
             return COLLIDED_WITH_ITSELF_TEXT;
-        else if (isCollidingWithWalls(state))
+        else if (COLLIDED_WITH_WALL_TEXT && isCollidingWithWalls(state))
             return COLLIDED_WITH_WALL_TEXT;
         else return GAME_WIN_TEXT;
     }
