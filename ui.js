@@ -4,10 +4,12 @@
 // @param {number} canvas - дом-элемент в котором будет проихсодить отрисовка
 // @param {number} cellNum - размер игрового поля в клетках (и ширина и высота)
 // @param {number} cellSize - ширина/высота (квадратной) клетки в пикселях
-function changeCanvasSize(canvas, cellNum, cellSize) {
+function changeCanvasProperties(canvas, cellNum, cellSize, colorCellBorder, colorEmptyCell) {
     const newSize = cellNum*cellSize + "px";
     canvas.setAttribute('width', newSize);
     canvas.setAttribute('height', newSize);
+    canvas.style.border = `1px ${colorCellBorder} solid`;
+    canvas.style.backgroundColor = colorEmptyCell;
 }
 
 // Отрисовать матрицу (двумерный массив, моделирующий игровое поле) в <canvas>
@@ -53,7 +55,7 @@ function drawStateOnCanvas(state, canvas) {
             });
         });
     } else {
-        context.font = "16px serif";
+        context.font = TEXT_FONT;
         context.fillStyle = COLOR_TEXT;
         context.fillText(gameOverText(state), 10, 10);
     }
