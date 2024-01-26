@@ -1,7 +1,7 @@
 // Сюда, в отдельный файл, вынесены функции, работающие с интерфейсом
 
 // Изменить размер канваса
-// @param {number} canvas - дом-элемент в котором будет проихсодить отрисовка
+// @param {number} canvas - дом-элемент в котором будет происходить отрисовка
 // @param {number} cellNum - размер игрового поля в клетках (и ширина и высота)
 // @param {number} cellSize - ширина/высота (квадратной) клетки в пикселях
 // @param {string} colorCellBorder - цвет бордера канваса
@@ -14,9 +14,10 @@ function changeCanvasProperties(canvas, cellNum, cellSize, colorCellBorder, colo
     canvas.style.backgroundColor = colorBackground;
 }
 
-// Отрисовать матрицу (двумерный массив, моделирующий игровое поле) в <canvas>
+// Отрисовать матрицу (двумерный массив, моделирующий игровое поле) в <canvas> или
+// сообщение о том что игра окончена
 // @param {object} state - объект с состоянием игры
-// @param {HTMLElement} canvas - дом-элемент в котором будет проихсодить отрисовка
+// @param {HTMLElement} canvas - дом-элемент в котором будет происходить отрисовка
 function drawStateOnCanvas(state, canvas) {
     const context = canvas.getContext("2d");
 
@@ -63,7 +64,8 @@ function drawStateOnCanvas(state, canvas) {
     }
 }
 
-// Отрисовать матрицу (двумерный массив, моделирующий игровое поле) в <textarea>
+// Отрисовать матрицу (двумерный массив, моделирующий игровое поле) в <textarea> или
+// сообщение о том что игра окончена
 // @param {object} state - объект с состоянием игры
 // @param {HTMLElement} textarea - дом-элемент в котором будет распечатана матрица
 function drawStateInTextarea(state, textarea) {
